@@ -9,11 +9,13 @@ import './src/env';
 
 const nextConfig: NextConfig = {
     devIndicators: false,
-    ...(process.env.STANDALONE_BUILD === 'true' && { output: 'standalone' }),
+    // TODO: Remove this once we have a proper ESLint and TypeScript config
     eslint: {
-        // Don't run ESLint during builds - handle it separately in CI
         ignoreDuringBuilds: true,
     },
+    serverExternalPackages: ['sharp'],
+    // Enable standalone output for Docker deployments
+    output: process.env.STANDALONE_BUILD ? 'standalone' : undefined,
 };
 
 if (process.env.NODE_ENV === 'development') {
